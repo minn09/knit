@@ -32,6 +32,7 @@ export function EmptyState({
         src={poses[pose]}
         alt=""
         width={size}
+        loading="eager"
         style={{ width: size, height: "auto" }}
       />
       <h2 className="text-lg font-semibold">{title}</h2>

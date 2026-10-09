@@ -13,9 +13,7 @@ export function ThemeShortcut() {
 
       if (
         target instanceof HTMLElement &&
-        target.closest(
-          "input, textarea, select, [contenteditable='true']"
-        )
+        target.closest("input, textarea, select, [contenteditable='true']")
       ) {
         return;
       }

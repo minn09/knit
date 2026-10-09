@@ -10,32 +10,32 @@ export const metadata: Metadata = {
     "Notas en markdown y una lista de tareas ligada a tus notas. Funciona sin cuenta; con cuenta, sincroniza entre dispositivos.",
 };
 
-// Cambia soon a false cuando cada fase esté lista
+// Cambia soon a true cuando una función todavía no esté lista
 const features = [
   {
     title: "Markdown cuando quieras",
-    text: "Escribe en markdown con vista previa, o apágalo en una nota y úsala como un bloc de notas normal.",
+    text: "Escribe en markdown con vista previa en vivo, o apágalo en una nota y úsala como un bloc de notas normal.",
     soon: false,
   },
   {
     title: "Organiza a tu manera",
-    text: "Carpetas anidadas, tags y notas fijadas para encontrar todo rápido.",
-    soon: true,
+    text: "Carpetas anidadas, tags y notas fijadas para encontrar todo rápido. Búsqueda por título, incluso sin conexión.",
+    soon: false,
   },
   {
     title: "Tareas ligadas a tus notas",
     text: "Una lista de tareas con subtareas, conectada con las notas donde nacieron.",
-    soon: true,
+    soon: false,
   },
   {
     title: "Funciona sin internet",
     text: "Tus notas viven en tu dispositivo. Instálala como app y sigue escribiendo aunque se caiga la red.",
-    soon: true,
+    soon: false,
   },
   {
     title: "Sincroniza si quieres",
     text: "Empieza sin cuenta. Si inicias sesión, tus notas te siguen a todos tus dispositivos.",
-    soon: true,
+    soon: false,
   },
 ];
 
@@ -49,7 +49,7 @@ export default function Landing() {
             src={oviHello}
             alt="Ovi, la mascota de Knit"
             width={160}
-            priority
+            preload
             style={{ width: 160, height: "auto" }}
             className="mx-auto mb-6"
           />

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import ovi from "@/assets/mascot/ovi.png";
+import { AuthButton } from "@/components/auth/AuthButton";
+import { SyncStatus } from "@/components/sync/SyncStatus";
 import { ThemeButton } from "@/components/theme/ThemeButton";
 
 export function SiteHeader() {
@@ -23,7 +25,9 @@ export function SiteHeader() {
           >
             Changelog
           </Link>
+          <SyncStatus />
           <ThemeButton />
+          <AuthButton />
           <Link
             href="/notas"
             className="rounded bg-neutral-900 px-3 py-1.5 text-white dark:bg-white dark:text-neutral-900"

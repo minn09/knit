@@ -1,4 +1,4 @@
-import { THEME_KEY, THEME_EVENT } from "./consts";
+import { THEME_EVENT, THEME_KEY } from "./consts";
 import type { Theme } from "./types";
 export function getTheme(): Theme {
   if (typeof window === "undefined") {
