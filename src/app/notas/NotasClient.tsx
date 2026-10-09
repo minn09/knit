@@ -13,14 +13,19 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { PromptDialog } from "@/components/ui/prompt-dialog";
 import { db } from "@/lib/db";
 import { createFolder, deleteFolder, renameFolder } from "@/lib/folders";
-import { createNote } from "@/lib/notes";
+import { createNote, moveNote } from "@/lib/notes";
 import {
   filterNotesByTitle,
   listFolders,
   listNotes,
   listTags,
 } from "@/lib/queries";
-import { createTag, deleteTag } from "@/lib/tags";
+import {
+  addTagToNote,
+  createTag,
+  deleteTag,
+  removeTagFromNote,
+} from "@/lib/tags";
 
 interface ConfirmState {
   title: string;
@@ -39,6 +44,7 @@ export function NotasClient({
   const [query, setQuery] = useState("");
   const [folderFilter, setFolderFilter] = useState<FolderFilter>("all");
   const [tagFilter, setTagFilter] = useState<string | null>(null);
+  const [draggingNoteId, setDraggingNoteId] = useState<string | null>(null);
 
   const [folderDialog, setFolderDialog] = useState<{
     id: string | null;
@@ -58,6 +64,34 @@ export function NotasClient({
 
   const selected = notes?.find((note) => note.id === selectedId) ?? null;
 
+  const hasNotes = (notes?.length ?? 0) > 0;
+  const trimmedQuery = query.trim();
+  const activeFolderName =
+    folderFilter !== "all" && folderFilter !== "none"
+      ? (folders?.find((folder) => folder.id === folderFilter)?.name ?? null)
+      : null;
+  const activeTagName = tagFilter
+    ? (tags?.find((tag) => tag.id === tagFilter)?.name ?? null)
+    : null;
+
+  const noteTagIds = selected
+    ? new Set(
+        (links ?? [])
+          .filter((link) => link.noteId === selected.id)
+          .map((link) => link.tagId),
+      )
+    : new Set<string>();
+
+  const emptyText = trimmedQuery
+    ? `Sin resultados para «${trimmedQuery}».`
+    : activeFolderName
+      ? "Esta carpeta no tiene notas."
+      : activeTagName
+        ? "Nada con esta etiqueta."
+        : hasNotes
+          ? "No hay notas en esta vista."
+          : "No hay notas todavía.";
+
   let visible = notes ?? [];
   if (folderFilter === "none") {
     visible = visible.filter((note) => note.folderId === null);
@@ -74,13 +108,25 @@ export function NotasClient({
   }
   visible = filterNotesByTitle(visible, query);
 
-  const hasNotes = (notes?.length ?? 0) > 0;
-
   async function handleCreateNote() {
     const targetFolder =
       folderFilter !== "all" && folderFilter !== "none" ? folderFilter : null;
     const id = await createNote(targetFolder);
+    if (tagFilter) {
+      await addTagToNote(id, tagFilter);
+    }
+    setQuery("");
     setSelectedId(id);
+  }
+
+  async function handleDropOnFolder(noteId: string, folderId: string | null) {
+    await moveNote(noteId, folderId);
+    setDraggingNoteId(null);
+  }
+
+  async function handleDropOnTag(noteId: string, tagId: string) {
+    await addTagToNote(noteId, tagId);
+    setDraggingNoteId(null);
   }
 
   function handleAddFolder(parentId: string | null) {
@@ -150,6 +196,12 @@ export function NotasClient({
             query={query}
             onQueryChange={setQuery}
             onCreateNote={handleCreateNote}
+            draggingNoteId={draggingNoteId}
+            onDragStartNote={setDraggingNoteId}
+            onDragEndNote={() => setDraggingNoteId(null)}
+            onDropOnFolder={handleDropOnFolder}
+            onDropOnTag={handleDropOnTag}
+            emptyText={emptyText}
           />
         }
       >
@@ -158,12 +210,45 @@ export function NotasClient({
             key={selected.id}
             note={selected}
             onBack={() => setSelectedId(null)}
+            folders={folders ?? []}
+            tags={tags ?? []}
+            noteTagIds={noteTagIds}
+            onMoveFolder={moveNote}
+            onToggleTag={(noteId, tagId, active) =>
+              active
+                ? addTagToNote(noteId, tagId)
+                : removeTagFromNote(noteId, tagId)
+            }
+            onAddTag={handleAddTag}
           />
         ) : notes ? (
-          <NotesEmptyState
-            variant={hasNotes ? "select" : "no-notes"}
-            onCreate={handleCreateNote}
-          />
+          visible.length === 0 ? (
+            trimmedQuery ? (
+              <NotesEmptyState
+                variant="search"
+                query={trimmedQuery}
+                onClearSearch={() => setQuery("")}
+              />
+            ) : activeFolderName ? (
+              <NotesEmptyState
+                variant="folder"
+                name={activeFolderName}
+                onCreate={handleCreateNote}
+              />
+            ) : activeTagName ? (
+              <NotesEmptyState
+                variant="tag"
+                name={activeTagName}
+                onCreate={handleCreateNote}
+              />
+            ) : hasNotes ? (
+              <NotesEmptyState variant="select" />
+            ) : (
+              <NotesEmptyState variant="no-notes" onCreate={handleCreateNote} />
+            )
+          ) : (
+            <NotesEmptyState variant="select" />
+          )
         ) : null}
       </NotesLayout>
 
