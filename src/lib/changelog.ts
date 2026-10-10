@@ -14,6 +14,16 @@ export interface ChangelogEntry {
 // },
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.1.3",
+    date: "2026-10-10",
+    changes: [
+      {
+        type: "fixed",
+        text: "La sincronización con la nube ya no se corta al subir las etiquetas de las notas; antes fallaba y las tareas nuevas no llegaban a subirse.",
+      },
+    ],
+  },
+  {
     version: "0.1.2",
     date: "2026-10-09",
     changes: [
