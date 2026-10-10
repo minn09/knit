@@ -110,6 +110,7 @@ export const TABLE_SPECS: TableSpec[] = [
       return baseUpstream(link, userId, {
         note_id: link.noteId,
         tag_id: link.tagId,
+        created_at: link.createdAt,
       });
     },
     downstream: (row, userId) => ({
@@ -117,7 +118,7 @@ export const TABLE_SPECS: TableSpec[] = [
       ownerId: userId,
       noteId: str(row.note_id),
       tagId: str(row.tag_id),
-      createdAt: str(row.updated_at),
+      createdAt: str(row.created_at),
       updatedAt: str(row.updated_at),
       deletedAt: strOrNull(row.deleted_at),
       syncState: "synced",
