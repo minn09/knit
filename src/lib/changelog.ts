@@ -14,6 +14,28 @@ export interface ChangelogEntry {
 // },
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.1.2",
+    date: "2026-10-09",
+    changes: [
+      {
+        type: "added",
+        text: "Al compartir el link de Knit en redes y apps de chat aparece una tarjeta con el título y el logo (Open Graph y Twitter).",
+      },
+      {
+        type: "changed",
+        text: "Rediseño de la pantalla de Notas: arrastra y suelta las notas para moverlas entre carpetas y tags.",
+      },
+      {
+        type: "changed",
+        text: "La portada se renovó y ahora presenta la app.",
+      },
+      {
+        type: "changed",
+        text: "Mejores pantallas vacías que te guían cuando todavía no hay notas.",
+      },
+    ],
+  },
+  {
     version: "0.1.1",
     date: "2026-10-09",
     changes: [
