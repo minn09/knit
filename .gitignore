@@ -49,3 +49,6 @@ next-env.d.ts
 
 # CodeGraph index
 .codegraph/
+
+# Playwright MCP artifacts (snapshots, screenshots, logs)
+.playwright-mcp/
