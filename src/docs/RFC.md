@@ -97,7 +97,7 @@ Este documento cubre:
 | Dependencia            | Tipo                             | Estado    |
 | ---------------------- | -------------------------------- | --------- |
 | Proyecto en Supabase   | Requerida (solo desde la fase 4) | Creado (fase 4)     |
-| Repositorio + Vercel   | Requerida                        | Pendiente           |
+| Repositorio + Vercel   | Requerida                        | Activo (knit-seven.vercel.app)           |
 | Librería PWA (Serwist) | Opcional (fase 5)                | No usada: SW propio |
 
 
@@ -490,6 +490,17 @@ Decisiones tomadas al construir la v1 que conviene conocer:
 - **Claves nuevas de Supabase.** Los proyectos creados con el CLI emiten claves
   tipo `sb_publishable_…`; el JWT `anon` legacy responde 401. En el cliente se usa
   la clave publicable (`NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+- **Variables de entorno de producción.** `.env.production` está trackeado
+  (excepción `!.env.production` en `.gitignore`) con las vars publicables de
+  Supabase, para que el build de Vercel muestre el botón de sesión sin configurar
+  el dashboard. `.env.local` sigue ignorado para valores locales. Opcional:
+  `NEXT_PUBLIC_SITE_URL` fija las URLs absolutas de las tarjetas de compartir
+  (Open Graph / Twitter) con dominio propio; en Vercel la URL de producción se
+  detecta sola.
+- **Tarjetas de compartir (Open Graph).** `src/app/opengraph-image.tsx` genera
+  la imagen 1200×630 en build con `ImageResponse` (icono embebido en base64; no
+  entra en el tope de 500 KB de `next/og`), y `layout.tsx` declara `metadataBase`,
+  `openGraph` y `twitter`.
 - **Confirmación de correo.** Con el ajuste por defecto el registro exige
   confirmar el correo: la interfaz avisa y no cierra hasta confirmar.
 - **Google OAuth.** Se habilita en Supabase → Providers → Google con un OAuth
