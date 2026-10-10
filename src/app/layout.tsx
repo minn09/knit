@@ -16,19 +16,44 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteTitle = "Knit · Notas en markdown y tareas";
+const siteDescription =
+  "Notas en markdown y una lista de tareas ligada a tus notas. Funciona sin cuenta y sin conexión; con cuenta, sincroniza entre dispositivos.";
+
+// URL absoluta para las tarjetas de previsualización al compartir. En Vercel
+// se resuelve sola; con dominio propio, fijar NEXT_PUBLIC_SITE_URL.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   applicationName: "Knit",
   title: {
-    default: "Knit · Notas en markdown y tareas",
+    default: siteTitle,
     template: "%s · Knit",
   },
-  description:
-    "Notas en markdown y una lista de tareas ligada a tus notas. Funciona sin cuenta y sin conexión; con cuenta, sincroniza entre dispositivos.",
+  description: siteDescription,
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     title: "Knit",
     statusBarStyle: "default",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Knit",
+    title: siteTitle,
+    description: siteDescription,
+    locale: "es_ES",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
   },
 };
 
