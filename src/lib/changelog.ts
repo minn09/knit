@@ -14,6 +14,16 @@ export interface ChangelogEntry {
 // },
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.1.4",
+    date: "2026-10-10",
+    changes: [
+      {
+        type: "fixed",
+        text: "Al desactivar el modo markdown (MD), el editor de texto plano ahora ocupa todo el ancho de la nota en lugar de quedar en un recuadro angosto.",
+      },
+    ],
+  },
+  {
     version: "0.1.3",
     date: "2026-10-10",
     changes: [

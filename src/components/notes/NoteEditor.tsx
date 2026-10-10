@@ -273,7 +273,7 @@ export function NoteEditor({
             }}
             placeholder="Escribe aquí…"
             spellCheck={false}
-            className="h-full resize-none bg-transparent p-4 font-mono text-sm outline-none"
+            className="h-full w-full resize-none bg-transparent p-4 font-mono text-sm outline-none"
           />
         )}
       </div>
