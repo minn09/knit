@@ -75,6 +75,12 @@ Open http://localhost:3000. That is it — no configuration is required to use K
 
 Without these variables, Knit stays fully local.
 
+### Deploy (production)
+
+The Vercel build needs no dashboard setup: the Supabase publishable variables ship in the tracked `.env.production` file (`.gitignore` un-ignores exactly `.env.example` and `.env.production`). That is safe by design — the publishable key is meant to travel in the client bundle, and Row Level Security protects the data. `.env.local` stays ignored for local overrides.
+
+Optional: set `NEXT_PUBLIC_SITE_URL` to your production origin to pin absolute URLs in the share-preview metadata (Open Graph / Twitter cards). On Vercel the production URL is detected automatically.
+
 ## Scripts
 
 | Command | What it does |
